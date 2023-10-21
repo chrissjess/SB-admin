@@ -38,6 +38,7 @@ function Dashboard({data,setData}) {
     newArray.splice(index,1)
     setData(newArray)
   }
+ 
   let navigate = useNavigate()
   return (
     <>
@@ -94,7 +95,7 @@ function Dashboard({data,setData}) {
                         <td>{e.mobile}</td>
                         <td>{e.batch}</td>
                         <td>
-                        <Button variant="primary">Edit</Button> 
+                        <Button variant="primary" onClick={()=>{navigate(`/edit/${i}`)}}>Edit</Button> 
                         &nbsp;
                         &nbsp;
                         <Button variant="danger" onClick={()=>{handleDelete(i)}}>Delete</Button>

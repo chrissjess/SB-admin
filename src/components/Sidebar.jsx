@@ -18,7 +18,7 @@ function Sidebar() {
 
     {/* <!-- Nav Item - Dashboard --> */}
     <li className="nav-item active">
-        <div className="nav-link" href="index.html">
+        <div className="nav-link" >
            <Link to={'/dashboard'}>
            <i className="fas fa-fw fa-tachometer-alt"></i>
             <span style={{color:'white'}}>Dashboard</span>
@@ -33,7 +33,7 @@ function Sidebar() {
 
     {/* <!-- Nav Item - Pages Collapse Menu --> */}
     <li className="nav-item">
-        <div className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        <div className="nav-link collapsed"  data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
           <Link to={'/create'}>
           <i className="fas fa-fw fa-cog"></i>
@@ -51,11 +51,21 @@ function Sidebar() {
 
     {/* <!-- Nav Item - Utilities Collapse Menu --> */}
     <li className="nav-item">
-        <div className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+        <div className="nav-link collapsed"  data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
-           <Link>
+           <Link to={'/UseRef'}>
             <i className="fas fa-fw fa-wrench"></i>
-            <span style={{color:'white'}}>Edit User</span>
+            <span style={{color:'white'}}>Hooks Examples</span>
+           </Link>
+        </div>
+    </li>
+
+    <li className="nav-item">
+        <div className="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+           <Link to={'/nestedexamples'}>
+            <i className="fas fa-fw fa-wrench"></i>
+            <span style={{color:'white'}}>Nested Examples</span>
            </Link>
         </div>
     </li>
