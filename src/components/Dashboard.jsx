@@ -1,44 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Button from 'react-bootstrap/Button';
 import Tile from "./Tile";
+import { UserDataContext } from "./Context/UseContext";
+import { DashboardDataContext } from "./Context/dashboardContext";
 
-function Dashboard({data,setData}) {
-  let dashboardData = [
-    {
-      color: "primary",
-      icon: "fa-calendar",
-      title: "Earnings (Monthly)",
-      value: "$40,000",
-    },
-    {
-      color: "success",
-      icon: "fa-dollar-sign",
-      title: "Earnings (Annual)",
-      value: "$2,15,000",
-    },
-    {
-      isProgress: true,
-      color: "info",
-      icon: "fa-clipboard-list",
-      title: "Tasks",
-      value: "50",
-    },
-    {
-      color: "warning",
-      icon: "fa-comments",
-      title: "Pending Requests",
-      value: "18",
-    },
-  ];
+function Dashboard() {
+ 
+  let {dashboardData} = useContext(DashboardDataContext)
+  let {data,setData} = useContext(UserDataContext)
 
   let handleDelete = (index)=>{
     let newArray = [...data]
     newArray.splice(index,1)
     setData(newArray)
   }
- 
+  
   let navigate = useNavigate()
   return (
     <>

@@ -1,18 +1,21 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import Form from "react-bootstrap/Form";
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { UserDataContext } from "./Context/UseContext";
 
 
-function Create({data,setData}) {
+function Create() {
 
   // let [name,setName] = useState("")
   // let [username,setUserName] = useState("")
   // let [email,setEmail] = useState("")
   // let [mobile,setMobile] = useState("")
   // let [batch,setBatch] = useState("")
+
+  let {data,setData} = useContext(UserDataContext)
 
   useEffect(()=>{
     console.log('useEffect Triggered')

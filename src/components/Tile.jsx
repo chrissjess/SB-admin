@@ -1,6 +1,9 @@
 import React from "react";
 
 function Tile({color,icon,title,value,isProgress=false}) {
+
+   
+
     return <>
     {
       isProgress ?

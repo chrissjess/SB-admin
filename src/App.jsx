@@ -11,36 +11,27 @@ import Products from './NestedExamples/Products'
 import Receipts from './NestedExamples/Receipts'
 import Staff from './NestedExamples/Staff'
 import UseRef from './components/Hooks/UseRef'
+import UseReducer from './components/UseReducer/UseReducer'
+import UseContext,{ UserDataContext } from './components/Context/UseContext'
+import DashboardContext,{ DashboardDataContext } from './components/Context/dashboardContext'
 
 
 
 
 function App() {
-  let [data,setData] = useState([
-    {
-      name:"deepa",
-      username:'dee123',
-      email:'deepa@gmail.com',
-      mobile: "1234567890",
-      batch: 'B100',
-
-    },
-    {
-      name:"sree",
-      username:'sree423',
-      email:'sree@gmail.com',
-      mobile: "57684567890",
-      batch: 'B200',
-    }
-  ])
+  
   return <>
   <div id='wrapper'>
     <BrowserRouter>
     <Sidebar/>
     <Routes>
-      <Route path='/dashboard' element={<Dashboard data={data} setData={setData}/>}/>
-      <Route path='/create' element={<Create data={data} setData={setData}/>}/>
-      <Route path='/edit/:id' element={<Edit data={data} setData={setData}/>}/>
+      <Route path='/dashboard' element={<UseContext>
+        <DashboardContext>
+        <Dashboard />
+        </DashboardContext>
+      </UseContext>}/>
+      <Route path='/create' element={<UseContext><Create /></UseContext>}/>
+      <Route path='/edit/:id' element={<UseContext><Edit /></UseContext>}/>
       <Route path='/nestedexamples' element={<NestedExamples/>}>
         <Route path='accounts' element={<Accounts/>}/>
         <Route path='products' element={<Products/>}/>
@@ -48,8 +39,9 @@ function App() {
         <Route path='staff'    element={<Staff/>}/>
       </Route>
       <Route path='useref' element={<UseRef/>}/>
+      <Route path='usereducer' element={<UseReducer/>}/>
       <Route path='/*' element={<Navigate to={'/dashboard'}/>}/>
-    </Routes>
+      </Routes>
     </BrowserRouter>
    
 
