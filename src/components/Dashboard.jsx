@@ -1,21 +1,55 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Button from 'react-bootstrap/Button';
 import Tile from "./Tile";
 import { UserDataContext } from "./Context/UseContext";
 import { DashboardDataContext } from "./Context/dashboardContext";
+import axios from "axios";
+import { toast } from 'react-toastify';
 
 function Dashboard() {
  
   let {dashboardData} = useContext(DashboardDataContext)
-  let {data,setData} = useContext(UserDataContext)
+  let [data,setData] = useState([])
+  const {API_URL} = useContext(UserDataContext)
 
-  let handleDelete = (index)=>{
+  let handleDelete = async(id,index)=>{
     let newArray = [...data]
     newArray.splice(index,1)
     setData(newArray)
+    try {
+      let res = await axios.delete(`${API_URL}/${id}`)
+      if(res.status===200){
+     
+      getData()
+    }
+    } catch (error) {
+      toast.error('Server Error')
+    }
   }
+  
+ const getData = async()=>{
+  
+  try {
+    let res = await axios.get(API_URL)
+    if(res.status===200){
+      // toast.success('Data Fetched')
+      setData(res.data)
+    }
+    
+  } catch (error) {
+    toast.error('Invalid request')
+  }
+
+     
+
+     
+ }
+
+  useEffect(()=>{
+      getData()
+  },[])
   
   let navigate = useNavigate()
   return (
@@ -57,9 +91,11 @@ function Dashboard() {
                 <th>Name</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Mobile</th>
                 <th>Batch</th>
                 <th>Action</th>
+             
               </tr>
             </thead>
             <tbody>
@@ -73,10 +109,10 @@ function Dashboard() {
                         <td>{e.mobile}</td>
                         <td>{e.batch}</td>
                         <td>
-                        <Button variant="primary" onClick={()=>{navigate(`/edit/${i}`)}}>Edit</Button> 
+                        <Button variant="primary" onClick={()=>{navigate(`/edit/${e.id}`)}}>Edit</Button> 
                         &nbsp;
                         &nbsp;
-                        <Button variant="danger" onClick={()=>{handleDelete(i)}}>Delete</Button>
+                        <Button variant="danger" onClick={()=>{handleDelete(e.id,1)}}>Delete</Button>
                          
                         </td>
                         </tr>

@@ -1,23 +1,25 @@
 import React,{useEffect,useState,useContext} from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Formik } from 'formik';
+import { Formik, setIn } from 'formik';
 import * as Yup from 'yup';
 import { useParams,useNavigate } from 'react-router-dom';
 import { UserDataContext } from './Context/UseContext';
+import axios from 'axios';
+import {toast} from 'react-toastify'
 
 const Edit = ()=>{
   
-  let {data,setData} = useContext(UserDataContext)
-
   const params = useParams()
+  const {API_URL} = useContext(UserDataContext)
  
   const [initialValues,setInitialValues] = useState({
     name:"",
     email:"",
     username:"",
     mobile:"",
-    batch:""
+    batch:"",
+    password:""
   })
   let navigate = useNavigate()
 
@@ -28,18 +30,33 @@ const Edit = ()=>{
     mobile:Yup.string().matches(/^\d{10}$/,'* Invalid Mobile Number').required('* Required'),
     batch:Yup.string()
   })
-  const getData = (index)=>{
-    let newValues = {...initialValues}
-    newValues.name = data[index].name
-    newValues.email = data[index].email
-    newValues.mobile = data[index].mobile
-    newValues.username = data[index].username
-    newValues.batch = data[index].batch
-    console.log(newValues)
-    setInitialValues(newValues)
+ 
+  const getData = async(id)=>{
+    try { 
+      let res = await axios.get(`${API_URL}/${id}`)
+      if(res.status === 200)
+      {
+        setInitialValues(res.data)
+        console.log(res.data)
+      }
+    } catch (error) {
+      toast('Error Occoured')
+    } 
+  }
+
+  const handleEditUser = async(values)=>{
+    try {
+      let res = await axios.put(`${API_URL}/${params.id}`,values)
+      if(res.status===200)
+      {
+        navigate('/dashboard')
+      }
+    } catch (error) {
+        toast.error("Error Occoured")
+    }
   }
   useEffect(()=>{
-    if(Number(params.id)<data.length)
+    if(Number(params.id))
     {
         getData(Number(params.id))
     }
@@ -59,11 +76,8 @@ const Edit = ()=>{
           initialValues={initialValues}
           validationSchema={UserSchema}
           enableReinitialize={true}
-          onSubmit={(values)=>{
-            let newArray = [...data]//immutable deep copy
-            newArray.splice(params.id,1,values)
-            setData(newArray)//state update
-            navigate('/dashboard')
+          onSubmit={ (values)=>{
+              handleEditUser(values)
           }}
         >
           {({ values,errors,touched,handleBlur,handleSubmit,handleChange})=>(
@@ -86,7 +100,14 @@ const Edit = ()=>{
                 <Form.Control type="email" value = {values.email} name='email' placeholder="Enter email"  onBlur={handleBlur} onChange={handleChange}/>
                 {errors.email && touched.email ? <div style={{color:"red"}}>{errors.email}</div>:null}
               </Form.Group>
-    
+              
+              <Form.Group className="mb-3">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" name='password' value={values.password} placeholder="Enter password"  onBlur={handleBlur} onChange={handleChange}/>
+                {errors.password && touched.password ? <div style={{color:"red"}}>{errors.password}</div>:null}
+              </Form.Group>
+
+
               <Form.Group className="mb-3">
                 <Form.Label>Mobile</Form.Label>
                 <Form.Control type="text" value = {values.mobile} name='mobile' placeholder="Enter Mobile" onBlur={handleBlur} onChange={handleChange}/>
